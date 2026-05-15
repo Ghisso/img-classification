@@ -162,3 +162,16 @@ cython_debug/
 data/*
 multirun/
 outputs/
+
+# BEGIN multi-agent bootstrap generated/private AI content
+.claude/
+.codex/
+.github/agents/
+.github/hooks/
+.github/instructions/
+.github/copilot-instructions.md
+.vscode/mcp.json
+.mcp.json
+AGENTS.md
+CLAUDE.md
+# END multi-agent bootstrap generated/private AI content

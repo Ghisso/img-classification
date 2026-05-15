@@ -1,0 +1,31 @@
+{
+  "name": "Multi-Agent GPU Sandbox",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "runArgs": [
+    "--gpus",
+    "all",
+    "--add-host=host.docker.internal:host-gateway"
+  ],
+  "mounts": [
+    "source=${localEnv:HOME}/.cache/huggingface,target=/home/vscode/.cache/huggingface,type=bind,consistency=cached"
+  ],
+  "containerEnv": {
+    "HF_AI_SYNC_BUCKET": "Ghisso/vscode_mounts/img-classification",
+    "HF_HUB_ENABLE_HF_TRANSFER": "1",
+    "HF_TOKEN": "${localEnv:HF_TOKEN}",
+    "HUGGING_FACE_HUB_TOKEN": "${localEnv:HUGGING_FACE_HUB_TOKEN}"
+  },
+  "remoteUser": "vscode",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": ".venv/bin/python"
+      }
+    }
+  },
+  "postCreateCommand": "if command -v uv >/dev/null 2>&1 && [ -f pyproject.toml ]; then uv sync; fi",
+  "postStartCommand": "bash .devcontainer/post-start.sh"
+}
