@@ -7,7 +7,9 @@
   "runArgs": [
     "--gpus",
     "all",
-    "--add-host=host.docker.internal:host-gateway"
+    "--add-host=host.docker.internal:host-gateway",
+    "--cap-add=SYS_ADMIN",
+    "--security-opt=seccomp=unconfined"
   ],
   "mounts": [
     "source=${localEnv:HOME}/.cache/huggingface,target=/home/vscode/.cache/huggingface,type=bind,consistency=cached"

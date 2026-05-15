@@ -1,3 +1,5 @@
+FROM node:22-bookworm-slim AS nodejs
+
 FROM nvcr.io/nvidia/cuda-dl-base:26.03-cuda13.2-devel-ubuntu24.04
 
 ARG USERNAME=vscode
@@ -8,9 +10,12 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV PIP_DISABLE_PIP_VERSION_CHECK=1
 ENV UV_BREAK_SYSTEM_PACKAGES=1
 
+COPY --from=nodejs /usr/local /usr/local
+
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         bash \
+        bubblewrap \
         ca-certificates \
         curl \
         git \
@@ -20,6 +25,8 @@ RUN apt-get update \
         python3-venv \
         sudo \
     && rm -rf /var/lib/apt/lists/*
+
+RUN npm install -g context-mode
 
 RUN if ! getent group "${USER_GID}" >/dev/null; then groupadd --gid "${USER_GID}" "${USERNAME}"; fi \
     && if ! id -u "${USERNAME}" >/dev/null 2>&1; then \
